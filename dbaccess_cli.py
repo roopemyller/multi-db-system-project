@@ -183,11 +183,11 @@ def find(
         cursor.execute("SELECT * FROM cameras WHERE brand_id = %s", (brand_id,))
         print_table(cursor, table)
 
-        table == "lenses"
+        table = "lenses"
         cursor.execute("SELECT * FROM lenses WHERE brand_id = %s", (brand_id,))
         print_table(cursor, table)
         
-        table == "accessories"
+        table = "accessories"
         cursor.execute("SELECT * FROM accessories WHERE compatible_brands ILIKE %s OR compatible_brands ILIKE %s", (f"%{brand_name}%", "%All Brands%"))
         print_table(cursor, table)
 
