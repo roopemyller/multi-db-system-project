@@ -34,17 +34,16 @@ def populate_database(db_name, cameras, lenses, accessories):
         accessories: A list of accessory data tuples.
     """
 
+    # create a new database connection and execute the schema
     connection = psycopg2.connect(dbname=db_name, user=DB_USER, port=DB_PORT)
-
     cursor = connection.cursor()
-
     cursor.execute(SCHEMA)
-
+    
+    # insert data into tables
     cursor.executemany(
         "INSERT INTO brands (name, country, founded_year) VALUES (%s, %s, %s)",
         REPLICATED_BRANDS
     )
-
     cursor.executemany(
         "INSERT INTO camera_types (type_name, description) VALUES (%s, %s)",
         REPLICATED_CAMERA_TYPES

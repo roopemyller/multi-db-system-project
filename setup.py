@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+
+# define the setup for the dbaccess package
 setup(
     name="dbaccess",
     version="1.0.0",

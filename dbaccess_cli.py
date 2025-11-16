@@ -176,9 +176,9 @@ def find(
         if not brand_results:
             typer.echo(f"Brand '{brand_name}' not found in database '{dbname}'.")
             return
-
         brand_id = brand_results[0]    
 
+        # query and print associated items
         table = "cameras"
         cursor.execute("SELECT * FROM cameras WHERE brand_id = %s", (brand_id,))
         print_table(cursor, table)
@@ -208,6 +208,7 @@ def add(dbname: Annotated[str, typer.Argument(help="Database name to add to")]):
     connection = get_connection(dbname)
     cursor = connection.cursor()
 
+    # select table to add to
     while True:
         valid_tables = ["brands", "camera_types", "cameras", "lenses", "accessories"]
         typer.echo("\nAvailable tables to add to:")
@@ -303,6 +304,7 @@ def update(dbname: Annotated[str, typer.Argument(help="Database name to update")
     connection = get_connection(dbname)
     cursor = connection.cursor()
 
+    # select table to update
     while True:
         valid_tables = ["brands", "camera_types", "cameras", "lenses", "accessories"]
         typer.echo("\nAvailable tables to update a record in:")
@@ -405,6 +407,7 @@ def update(dbname: Annotated[str, typer.Argument(help="Database name to update")
 def restore():
     """Restore the databases to their initial state with the populate_dbs.py"""
 
+    # confirm action
     confirm = typer.confirm("Are you sure you want to restore all databases to their initial state? This will erase all current data.", default=False)
     if not confirm:
         typer.echo("Restore operation cancelled.")
@@ -413,6 +416,8 @@ def restore():
     try:
         typer.echo("Restoring databases to initial state...")
         
+        # drop and recreate public schema in each database
+
         databases = ["db1", "db2", "db3"]
         for db in databases:
             connection = get_connection(db)
@@ -422,6 +427,7 @@ def restore():
             cursor.close()
             connection.close()
 
+        # run the populate_dbs.py script to repopulate the databases
         subprocess.run(["python", "db_setup/populate_dbs.py"], check=True)
         typer.echo("Databases restored to initial state.")
     except subprocess.CalledProcessError as e:
