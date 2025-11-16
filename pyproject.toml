@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbaccess"
+version = "1.0.0"
+description = "Multi-database access CLI for camera equipment databases"
+authors = [{name = "Roope Myller"}]
+requires-python = ">=3.8"
+dependencies = [
+    "typer",
+    "psycopg2-binary",
+]
+
+[tool.setuptools]
+py-modules = ["dbaccess_cli"]
+
+[project.scripts]
+dbaccess = "dbaccess_cli:app"
